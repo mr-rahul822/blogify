@@ -1,0 +1,193 @@
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary navbar bg-dark border-bottom border-body custom-navbar" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand brand-text" href="#">Blogify</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active nav-link-custom" aria-current="page" href="/user/blog">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/user/add-blog">Add Blogs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/user/see-blog">See Blogs</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle nav-link-custom" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Rahul Kumhar
+          </a>
+          <ul class="dropdown-menu custom-dropdown">
+           <form action="/user/logout" method="POST" style="display: inline;">
+  <button type="submit" class="btn btn-danger">Logout</button>
+</form>
+            <!-- <li><a class="dropdown-item dropdown-item-custom" href="/user/logout">Logout</a></li> -->
+            <li><a class="dropdown-item dropdown-item-custom" href="#">Profile</a></li>
+            <li><a class="dropdown-item dropdown-item-custom" href="#">Settings</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="d-flex">
+        <form class="d-flex search-form" role="search">
+          <input class="form-control me-2 search-input" type="search" placeholder="Search blogs..." aria-label="Search"/>
+          <button class="btn btn-outline-success search-btn" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- see in this photo there are 2 nav bar are showing initialialy it not showing but when i loged out from navbar of blog.ejs page and redirect to signin page it is showing upper side in white box -->
+
+<style>
+  .custom-navbar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 12px 0;
+  }
+  
+  .brand-text {
+    font-weight: 700 !important;
+    font-size: 1.8rem !important;
+    color: #ffffff !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .brand-text:hover {
+    color: #f8f9fa !important;
+    transform: scale(1.05);
+  }
+  
+  .nav-link-custom {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    padding: 8px 16px !important;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin: 0 4px;
+  }
+  
+  .nav-link-custom:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .nav-link-custom.active {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+  }
+  
+  .custom-dropdown {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    margin-top: 8px;
+  }
+  
+  .dropdown-item-custom {
+    padding: 10px 20px;
+    font-weight: 500;
+    color: #4a5568;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 4px 8px;
+  }
+  
+  .dropdown-item-custom:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    transform: translateX(5px);
+  }
+  
+  .search-form {
+    align-items: center;
+  }
+  
+  .search-input {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+    min-width: 200px;
+  }
+  
+  .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .search-input:focus {
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+  }
+  
+  .search-btn {
+    border: 2px solid #28a745;
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+  }
+  
+  .search-btn:hover {
+    background: #28a745;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+  }
+  
+  .navbar-toggler {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 6px 10px;
+  }
+  
+  .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+  }
+  
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 991px) {
+    .search-input {
+      min-width: 150px;
+    }
+    
+    .custom-navbar {
+      padding: 8px 0;
+    }
+    
+    .nav-link-custom {
+      margin: 2px 0;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .search-input {
+      min-width: 120px;
+      font-size: 14px;
+    }
+    
+    .brand-text {
+      font-size: 1.5rem !important;
+    }
+  }
+</style>

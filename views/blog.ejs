@@ -1,0 +1,437 @@
+<!-- views/blog.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head") %>
+    <title>Blogify - Home</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .hero-section {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
+        }
+
+        .btn-write {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: #ffffff;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        .btn-write:hover {
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .search-section {
+            margin-bottom: 50px;
+        }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .search-input {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            background: #ffffff;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .blogs-section {
+            padding: 40px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .blog-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 3rem;
+        }
+
+        .blog-content {
+            padding: 25px;
+        }
+
+        .blog-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .blog-excerpt {
+            color: #6b7280;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 15px;
+        }
+
+        .blog-author {
+            font-weight: 500;
+            color: #667eea;
+        }
+
+        .blog-date {
+            color: #9ca3af;
+        }
+
+        .read-more {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .categories-section {
+            padding: 40px 0;
+        }
+
+        .category-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .category-pill {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 8px 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .category-pill:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .load-more {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-load-more {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 12px 30px;
+            color: #ffffff;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-load-more:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .blog-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .category-pills {
+                justify-content: flex-start;
+            }
+            
+            .hero-content, .search-container {
+                padding: 25px 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .blog-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include("./partials/nav")%>
+
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Welcome to Your Blog Space</h1>
+                        <p class="hero-subtitle">Discover amazing stories and share your own thoughts with the world</p>
+                        <a href="/user/add-blog" class="btn-write">Write a Blog</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="search-container">
+                        <form class="d-flex" role="search">
+                            <input class="form-control search-input me-3" type="search" placeholder="Search blogs, authors, topics..." aria-label="Search">
+                            <button class="btn search-btn text-white" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">Browse by Category</h2>
+            <div class="category-pills">
+                <a href="/category/technology" class="category-pill">Technology</a>
+                <a href="/category/lifestyle" class="category-pill">Lifestyle</a>
+                <a href="/category/travel" class="category-pill">Travel</a>
+                <a href="/category/food" class="category-pill">Food</a>
+                <a href="/category/health" class="category-pill">Health</a>
+                <a href="/category/business" class="category-pill">Business</a>
+                <a href="/category/entertainment" class="category-pill">Entertainment</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Blogs Section -->
+    <section class="blogs-section">
+        <div class="container">
+            <h2 class="section-title">Latest Blogs</h2>
+            <div class="blog-grid">
+                <!-- Blog Card 1 -->
+                <article class="blog-card">
+                    <div class="blog-image">📱</div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">The Future of Mobile Technology in 2025</h3>
+                        <div class="blog-meta">
+                            <span class="blog-author">By John Doe</span>
+                            <span class="blog-date">Dec 15, 2024</span>
+                        </div>
+                        <p class="blog-excerpt">Exploring the latest trends and innovations that will shape the mobile technology landscape in the coming year...</p>
+                        <a href="/blog/future-mobile-tech" class="read-more">Read More →</a>
+                    </div>
+                </article>
+
+                <!-- Blog Card 2 -->
+                <article class="blog-card">
+                    <div class="blog-image">🌍</div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Sustainable Travel: A Guide to Eco-Friendly Adventures</h3>
+                        <div class="blog-meta">
+                            <span class="blog-author">By Sarah Smith</span>
+                            <span class="blog-date">Dec 12, 2024</span>
+                        </div>
+                        <p class="blog-excerpt">Discover how to explore the world while minimizing your environmental impact with these practical travel tips...</p>
+                        <a href="/blog/sustainable-travel" class="read-more">Read More →</a>
+                    </div>
+                </article>
+
+                <!-- Blog Card 3 -->
+                <article class="blog-card">
+                    <div class="blog-image">🍳</div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Mastering the Art of Home Cooking</h3>
+                        <div class="blog-meta">
+                            <span class="blog-author">By Chef Mike</span>
+                            <span class="blog-date">Dec 10, 2024</span>
+                        </div>
+                        <p class="blog-excerpt">From basic techniques to advanced recipes, learn how to transform your kitchen into a culinary paradise...</p>
+                        <a href="/blog/home-cooking-mastery" class="read-more">Read More →</a>
+                    </div>
+                </article>
+
+                <!-- Blog Card 4 -->
+                <article class="blog-card">
+                    <div class="blog-image">💡</div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Building Better Habits for Success</h3>
+                        <div class="blog-meta">
+                            <span class="blog-author">By Lisa Johnson</span>
+                            <span class="blog-date">Dec 8, 2024</span>
+                        </div>
+                        <p class="blog-excerpt">Simple strategies and proven methods to develop positive habits that will transform your daily routine...</p>
+                        <a href="/blog/better-habits" class="read-more">Read More →</a>
+                    </div>
+                </article>
+
+                <!-- Blog Card 5 -->
+                <article class="blog-card">
+                    <div class="blog-image">🎨</div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">The Psychology of Color in Design</h3>
+                        <div class="blog-meta">
+                            <span class="blog-author">By Alex Chen</span>
+                            <span class="blog-date">Dec 5, 2024</span>
+                        </div>
+                        <p class="blog-excerpt">Understanding how colors influence emotions and behavior, and how to use this knowledge in your design projects...</p>
+                        <a href="/blog/color-psychology" class="read-more">Read More →</a>
+                    </div>
+                </article>
+
+                <!-- Blog Card 6 -->
+                <article class="blog-card">
+                    <div class="blog-image">⚡</div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Productivity Hacks for Remote Workers</h3>
+                        <div class="blog-meta">
+                            <span class="blog-author">By David Wilson</span>
+                            <span class="blog-date">Dec 3, 2024</span>
+                        </div>
+                        <p class="blog-excerpt">Maximize your efficiency and maintain work-life balance while working from home with these proven strategies...</p>
+                        <a href="/blog/remote-productivity" class="read-more">Read More →</a>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more">
+                <a href="/blogs" class="btn-load-more">Load More Blogs</a>
+            </div>
+        </div>
+    </section>
+
+    <%- include("./partials/script")%>
+</body>
+</html>

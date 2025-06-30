@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("./partials/head") %>
+    <title>Blogify - My Blogs</title>
+    <style>
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .hero-section {
+        padding: 80px 0 40px;
+        text-align: center;
+      }
+
+      .hero-content {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        margin-bottom: 40px;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #ffffff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        margin-bottom: 15px;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 25px;
+      }
+
+      .stats-container {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+      }
+
+      .stat-item {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 20px 25px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #ffffff;
+        display: block;
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .filter-section {
+        padding: 20px 0 40px;
+      }
+
+      .filter-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .filter-tabs {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .filter-tab {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid transparent;
+        border-radius: 25px;
+        padding: 10px 20px;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .filter-tab.active {
+        background: rgba(255, 255, 255, 0.9);
+        color: #667eea;
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      .filter-tab:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: #ffffff;
+        transform: translateY(-2px);
+      }
+
+      .search-filter {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .search-input {
+        flex: 1;
+        min-width: 250px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 10px 20px;
+        font-size: 1rem;
+      }
+
+      .search-input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        outline: none;
+      }
+
+      .sort-select {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 10px 15px;
+        font-size: 0.95rem;
+      }
+
+      .blogs-section {
+        padding: 40px 0 80px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        margin-bottom: 30px;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ffffff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        margin: 0;
+      }
+
+      .add-blog-btn {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: #ffffff;
+        border: none;
+        border-radius: 25px;
+        padding: 12px 25px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .add-blog-btn:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+      }
+
+      .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+      }
+
+      .blog-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .blog-status {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        z-index: 2;
+      }
+
+      .status-published {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: #ffffff;
+      }
+
+      .status-draft {
+        background: linear-gradient(135deg, #ffc107, #fd7e14);
+        color: #ffffff;
+      }
+
+      .blog-image {
+        width: 100%;
+        height: 180px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 3rem;
+        position: relative;
+      }
+
+      .blog-content {
+        padding: 25px;
+      }
+
+      .blog-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 10px;
+        line-height: 1.4;
+      }
+
+      .blog-excerpt {
+        color: #6b7280;
+        margin-bottom: 15px;
+        line-height: 1.6;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .blog-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+        color: #9ca3af;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .blog-date {
+        font-weight: 500;
+      }
+
+      .blog-views {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .blog-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .action-btn {
+        padding: 8px 16px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .btn-view {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #ffffff;
+      }
+
+      .btn-edit {
+        background: linear-gradient(135deg, #17a2b8, #20c997);
+        color: #ffffff;
+      }
+
+      .btn-delete {
+        background: linear-gradient(135deg, #dc3545, #e74c3c);
+        color: #ffffff;
+      }
+
+      .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #ffffff;
+      }
+
+      .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        opacity: 0.7;
+      }
+
+      .empty-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .empty-subtitle {
+        font-size: 1rem;
+        opacity: 0.8;
+        margin-bottom: 30px;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 40px;
+      }
+
+      .page-btn {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 10px 15px;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .page-btn:hover,
+      .page-btn.active {
+        background: rgba(255, 255, 255, 0.3);
+        color: #ffffff;
+        transform: translateY(-2px);
+      }
+
+      .page-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2rem;
+        }
+
+        .stats-container {
+          gap: 15px;
+        }
+
+        .stat-item {
+          padding: 15px 20px;
+        }
+
+        .blog-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .section-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .filter-tabs {
+          justify-content: flex-start;
+        }
+
+        .search-filter {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .search-input {
+          min-width: auto;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .hero-title {
+          font-size: 1.8rem;
+        }
+
+        .section-title {
+          font-size: 1.6rem;
+        }
+
+        .blog-content {
+          padding: 20px;
+        }
+
+        .blog-actions {
+          justify-content: center;
+        }
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <%- include("./partials/nav")%>
+
+    <!-- Hero Section with Stats -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="hero-content">
+              <h1 class="hero-title">My Blog Dashboard</h1>
+              <p class="hero-subtitle">
+                Manage and track all your blog posts in one place
+              </p>
+
+              <div class="stats-container">
+                <div class="stat-item">
+                  
+                   <span class="stat-number"><%= typeof totalBlogs !== 'undefined' ? totalBlogs : 0 %></span>
+                  <span class="stat-label">Total Blogs</span>
+                </div>
+                <div class="stat-item">
+                  
+                   <span class="stat-number"><%= typeof publishedBlogs !== 'undefined' ? publishedBlogs : 0 %></span>
+                  <span class="stat-label">Published</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number"><%= typeof draftBlogs !== 'undefined' ? draftBlogs : 0 %></span>
+               
+                  <span class="stat-label">Drafts</span>
+                </div>
+                <div class="stat-item">
+                  
+                   <span class="stat-number"><%= typeof totalViews !== 'undefined' ? totalViews : 0 %></span>
+                  <span class="stat-label">Total Views</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="filter-container">
+              <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">
+                  All Blogs
+                </button>
+                <button class="filter-tab" data-filter="published">
+                  Published
+                </button>
+                <button class="filter-tab" data-filter="draft">Drafts</button>
+                <button class="filter-tab" data-filter="recent">Recent</button>
+              </div>
+
+              <div class="search-filter">
+                <input
+                  type="text"
+                  class="search-input"
+                  id="searchInput"
+                  placeholder="Search your blogs by title, content, or author..."
+                />
+                <select class="sort-select" id="sortSelect">
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="title">Title A-Z</option>
+                  <option value="title-desc">Title Z-A</option>
+                  <option value="published">Published First</option>
+                  <option value="draft">Drafts First</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blogs Section -->
+    <section class="blogs-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Your Blogs</h2>
+          <a href="/user/add-blog" class="add-blog-btn"> ✏️ Write New Blog </a>
+        </div>
+
+        <% if (blogs && blogs.length > 0) { %>
+        <div class="blog-grid" id="blogGrid">
+          <% blogs.forEach(blog => { %>
+          <article
+            class="blog-card"
+            data-status="<%= blog.published ? 'published' : 'draft' %>"
+            data-date="<%= blog.createdAt || blog.date %>"
+            data-title="<%= blog.title.toLowerCase() %>"
+          >
+            <div
+              class="blog-status <%= blog.published ? 'status-published' : 'status-draft' %>"
+            >
+              <%= blog.published ? 'Published' : 'Draft' %>
+            </div>
+
+            <div class="blog-image"><%= blog.image || '📝' %></div>
+
+            <div class="blog-content">
+              <h3 class="blog-title"><%= blog.title %></h3>
+              <p class="blog-excerpt"><%= blog.expert %></p>
+
+              <div class="blog-meta">
+                <span class="blog-date">
+                  📅 <%= new Date(blog.createdAt ||
+                  blog.date).toLocaleDateString('en-US', { year: 'numeric',
+                  month: 'short', day: 'numeric' }) %>
+                </span>
+                <span class="blog-views">
+                  👁️ <%= blog.views || 0 %> views
+                </span>
+              </div>
+
+              <div class="blog-actions">
+                <% if (blog.published) { %>
+                <a
+                  href="/user/blog/<%= blog.slug %>"
+                  class="action-btn btn-view"
+                  target="_blank"
+                >
+                  👁️ View
+                </a>
+                <% } else { %>
+                <a
+                  href="/user/blog/preview/<%= blog._id %>"
+                  class="action-btn btn-view"
+                  target="_blank"
+                >
+                  👁️ Preview
+                </a>
+                <% } %>
+                <a
+                  href="/user/edit-blog/<%= blog._id %>"
+                  class="action-btn btn-edit"
+                >
+                  ✏️ Edit
+                </a>
+                <button
+                  class="action-btn btn-delete"
+                  onclick="deleteBlog('<%= blog._id %>', '<%= blog.title %>')"
+                >
+                  🗑️ Delete
+                </button>
+              </div>
+            </div>
+          </article>
+          <% })  %>
+        </div>
+
+        <!-- Pagination -->
+        <% if (totalPages > 1) { %>
+        <div class="pagination">
+          <% if (hasPrevPage) { %>
+          <a href="?page=<%= prevPage %>" class="page-btn">← Previous</a>
+          <% } %> <% for (let i = 1; i <= totalPages; i++) { %>
+          <a
+            href="?page=<%= i %>"
+            class="page-btn <%= currentPage === i ? 'active' : '' %>"
+          >
+            <%= i %>
+          </a>
+          <% } %> <% if (hasNextPage) { %>
+          <a href="?page=<%= nextPage %>" class="page-btn">Next →</a>
+          <% } %>
+        </div>
+        <% } %> <% } else { %>
+        <!-- Empty State -->
+        <div class="empty-state">
+          <div class="empty-icon">📝</div>
+          <h3 class="empty-title">No blogs found</h3>
+          <p class="empty-subtitle">
+            You haven't created any blogs yet. Start writing your first blog
+            post!
+          </p>
+          <a href="/user/add-blog" class="add-blog-btn">
+            ✏️ Write Your First Blog
+          </a>
+        </div>
+        <% } %>
+      </div>
+    </section>
+
+    <%- include("./partials/script")%>
+
+    <script>
+      // Filter functionality
+      const filterTabs = document.querySelectorAll(".filter-tab");
+      const blogCards = document.querySelectorAll(".blog-card");
+      const searchInput = document.getElementById("searchInput");
+      const sortSelect = document.getElementById("sortSelect");
+      const blogGrid = document.getElementById("blogGrid");
+
+      // Filter by status
+      filterTabs.forEach((tab) => {
+        tab.addEventListener("click", function () {
+          // Update active tab
+          filterTabs.forEach((t) => t.classList.remove("active"));
+          this.classList.add("active");
+
+          const filter = this.dataset.filter;
+          filterBlogs(filter);
+        });
+      });
+
+      // Search functionality
+      searchInput.addEventListener("input", function () {
+        const searchTerm = this.value.toLowerCase();
+        filterBlogs(getActiveFilter(), searchTerm);
+      });
+
+      // Sort functionality
+      sortSelect.addEventListener("change", function () {
+        sortBlogs(this.value);
+      });
+
+      function getActiveFilter() {
+        return document.querySelector(".filter-tab.active").dataset.filter;
+      }
+
+      function filterBlogs(filter, searchTerm = "") {
+        const searchValue = searchTerm || searchInput.value.toLowerCase();
+
+        blogCards.forEach((card) => {
+          const status = card.dataset.status;
+          const title = card.dataset.title;
+          const content = card
+            .querySelector(".blog-excerpt")
+            .textContent.toLowerCase();
+
+          let statusMatch = false;
+          switch (filter) {
+            case "all":
+              statusMatch = true;
+              break;
+            case "published":
+              statusMatch = status === "published";
+              break;
+            case "draft":
+              statusMatch = status === "draft";
+              break;
+            case "recent":
+              const cardDate = new Date(card.dataset.date);
+              const weekAgo = new Date();
+              weekAgo.setDate(weekAgo.getDate() - 7);
+              statusMatch = cardDate >= weekAgo;
+              break;
+          }
+
+          const searchMatch =
+            searchValue === "" ||
+            title.includes(searchValue) ||
+            content.includes(searchValue);
+
+          if (statusMatch && searchMatch) {
+            card.style.display = "block";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      }
+
+      function sortBlogs(sortType) {
+        const cards = Array.from(blogCards);
+
+        cards.sort((a, b) => {
+          switch (sortType) {
+            case "newest":
+              return new Date(b.dataset.date) - new Date(a.dataset.date);
+            case "oldest":
+              return new Date(a.dataset.date) - new Date(b.dataset.date);
+            case "title":
+              return a.dataset.title.localeCompare(b.dataset.title);
+            case "title-desc":
+              return b.dataset.title.localeCompare(a.dataset.title);
+            case "published":
+              return b.dataset.status.localeCompare(a.dataset.status);
+            case "draft":
+              return a.dataset.status.localeCompare(b.dataset.status);
+            default:
+              return 0;
+          }
+        });
+
+        // Re-append sorted cards
+        cards.forEach((card) => blogGrid.appendChild(card));
+      }
+
+      // Delete blog functionality
+      function deleteBlog(blogId, blogTitle) {
+        if (
+          confirm(
+            `Are you sure you want to delete "${blogTitle}"? This action cannot be undone.`
+          )
+        ) {
+          fetch(`/user/delete-blog/${blogId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Remove the card from DOM
+                const card = document
+                  .querySelector(`[onclick*="${blogId}"]`)
+                  .closest(".blog-card");
+                card.style.animation = "fadeOut 0.3s ease";
+                setTimeout(() => {
+                  card.remove();
+                  // Update stats if needed
+                  location.reload();
+                }, 300);
+              } else {
+                alert("Error deleting blog: " + data.message);
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("Error deleting blog. Please try again.");
+            });
+        }
+      }
+
+      // Add fade out animation
+      const style = document.createElement("style");
+      style.textContent = `
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(-20px); }
+            }
+        `;
+      document.head.appendChild(style);
+
+      // Initialize with default sort
+      sortBlogs("newest");
+    </script>
+  </body>
+</html>

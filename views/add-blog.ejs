@@ -1,0 +1,505 @@
+
+
+
+<!-- views/add-blog.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head") %>
+    <title>Blogify - Create New Blog</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .hero-section {
+            padding: 80px 0 40px;
+            text-align: center;
+        }
+
+        .hero-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0;
+        }
+
+        .form-section {
+            padding: 40px 0 80px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            outline: none;
+        }
+
+        .form-control:hover {
+            border-color: #cbd5e0;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .content-textarea {
+            min-height: 200px;
+        }
+
+        .emoji-picker {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .emoji-option {
+            width: 40px;
+            height: 40px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .emoji-option:hover {
+            border-color: #667eea;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .emoji-option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+        }
+
+        .checkbox-label {
+            font-weight: 500;
+            color: #4a5568;
+            margin: 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: #ffffff;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+            border: 2px solid #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #6c757d;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .slug-preview {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #6c757d;
+            border: 1px solid #e2e8f0;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.85rem;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid transparent;
+        }
+
+        .alert-info {
+            background: rgba(13, 202, 240, 0.1);
+            border-color: rgba(13, 202, 240, 0.2);
+            color: #055160;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .form-container {
+                padding: 25px 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .emoji-picker {
+                grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include("./partials/nav")%>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Create Your Blog Post</h1>
+                        <p class="hero-subtitle">Share your thoughts and stories with the world</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="form-container">
+                        <div class="alert alert-info">
+                            <strong>📝 Writing Tips:</strong> Make sure your title is catchy, your excerpt gives a good preview, and your content is engaging. All fields marked with * are required.
+                        </div>
+
+                        <form action="/user/add-blog" method="POST" id="blogForm">
+                            <!-- Title and Author Row -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="title" class="form-label">Blog Title *</label>
+                                    <input type="text" class="form-control" id="title" name="title" required maxlength="100" placeholder="Enter an engaging title for your blog">
+                                    <div class="character-count" id="titleCount">0/100 characters</div>
+                                    <div class="slug-preview" id="slugPreview">URL: /blog/your-slug-will-appear-here</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="auther" class="form-label">Author Name *</label>
+                                    <input type="text" class="form-control" id="auther" name="auther" required maxlength="50" placeholder="Your name or pen name">
+                                    <div class="character-count" id="authorCount">0/50 characters</div>
+                                </div>
+                            </div>
+
+                            <!-- Excerpt -->
+                            <div class="form-group">
+                                <label for="expert" class="form-label">Blog Excerpt *</label>
+                                <textarea class="form-control" id="expert" name="expert" required maxlength="200" placeholder="Write a brief summary or teaser for your blog post (2-3 sentences)"></textarea>
+                                <div class="character-count" id="excerptCount">0/200 characters</div>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="form-group">
+                                <label for="content" class="form-label">Blog Content *</label>
+                                <textarea class="form-control content-textarea" id="content" name="content" required placeholder="Write your full blog post here. Be creative, informative, and engaging!"></textarea>
+                                <div class="character-count" id="contentCount">0 characters</div>
+                            </div>
+
+                            <!-- Image/Emoji Selection -->
+                            <div class="form-group">
+                                <label for="image" class="form-label">Blog Icon</label>
+                                <input type="hidden" id="image" name="image" value="📝">
+                                <p style="margin-bottom: 10px; color: #6c757d; font-size: 0.9rem;">Choose an emoji that represents your blog post:</p>
+                                <div class="emoji-picker">
+                                    <div class="emoji-option selected" data-emoji="📝">📝</div>
+                                    <div class="emoji-option" data-emoji="💡">💡</div>
+                                    <div class="emoji-option" data-emoji="🌟">🌟</div>
+                                    <div class="emoji-option" data-emoji="🚀">🚀</div>
+                                    <div class="emoji-option" data-emoji="💻">💻</div>
+                                    <div class="emoji-option" data-emoji="📱">📱</div>
+                                    <div class="emoji-option" data-emoji="🎨">🎨</div>
+                                    <div class="emoji-option" data-emoji="🌍">🌍</div>
+                                    <div class="emoji-option" data-emoji="🍳">🍳</div>
+                                    <div class="emoji-option" data-emoji="⚡">⚡</div>
+                                    <div class="emoji-option" data-emoji="🎯">🎯</div>
+                                    <div class="emoji-option" data-emoji="🏆">🏆</div>
+                                    <div class="emoji-option" data-emoji="🔥">🔥</div>
+                                    <div class="emoji-option" data-emoji="💎">💎</div>
+                                    <div class="emoji-option" data-emoji="🌈">🌈</div>
+                                    <div class="emoji-option" data-emoji="🎪">🎪</div>
+                                    <div class="emoji-option" data-emoji="🎭">🎭</div>
+                                    <div class="emoji-option" data-emoji="🎪">🎪</div>
+                                </div>
+                            </div>
+
+                            <!-- Hidden Slug Field (Auto-generated) -->
+                            <input type="hidden" id="slug" name="slug">
+
+                            <!-- Publish Status -->
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="published" name="published" class="checkbox" value="true">
+                                    <label for="published" class="checkbox-label">Publish immediately (uncheck to save as draft)</label>
+                                </div>
+                            </div>
+
+                            <!-- Submit Buttons -->
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary" name="action" value="save">Save as Draft</button>
+                                <form action="/user/add-blog" method="post"></form>
+                                <button type="submit" class="btn btn-success" name="action" value="publish">Publish Now</button>
+                                </form>
+                                <a href="/user/blog" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include("./partials/script")%>
+
+    <script>
+        // Character counting functionality
+        function updateCharacterCount(inputId, countId, maxLength) {
+            const input = document.getElementById(inputId);
+            const counter = document.getElementById(countId);
+            
+            if (input && counter) {
+                input.addEventListener('input', function() {
+                    const currentLength = this.value.length;
+                    counter.textContent = `${currentLength}${maxLength ? '/' + maxLength : ''} characters`;
+                    
+                    if (maxLength && currentLength > maxLength * 0.9) {
+                        counter.style.color = '#dc3545';
+                    } else {
+                        counter.style.color = '#9ca3af';
+                    }
+                });
+            }
+        }
+
+        // Initialize character counters
+        updateCharacterCount('title', 'titleCount', 100);
+        updateCharacterCount('auther', 'authorCount', 50);
+        updateCharacterCount('expert', 'excerptCount', 200);
+        updateCharacterCount('content', 'contentCount');
+
+        // Slug generation
+        function generateSlug(text) {
+            return text
+                .toLowerCase()
+                .replace(/[^\w\s-]/g, '') // Remove special characters
+                .replace(/\s+/g, '-') // Replace spaces with hyphens
+                .replace(/-+/g, '-') // Replace multiple hyphens with single
+                .trim();
+        }
+
+        // Update slug preview when title changes
+        document.getElementById('title').addEventListener('input', function() {
+            const title = this.value;
+            const slug = generateSlug(title);
+            document.getElementById('slug').value = slug;
+            document.getElementById('slugPreview').textContent = `URL: /blog/${slug || 'your-slug-will-appear-here'}`;
+        });
+
+        // Emoji selection functionality
+        document.querySelectorAll('.emoji-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                document.querySelectorAll('.emoji-option').forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Update hidden input value
+                document.getElementById('image').value = this.dataset.emoji;
+            });
+        });
+
+        // Form submission handling
+        document.getElementById('blogForm').addEventListener('submit', function(e) {
+            const action = e.submitter.value;
+            const publishedCheckbox = document.getElementById('published');
+            
+            if (action === 'publish') {
+                publishedCheckbox.checked = true;
+            } else if (action === 'save') {
+                publishedCheckbox.checked = false;
+            }
+        });
+
+        // Auto-save functionality (optional)
+        let autoSaveTimeout;
+        function autoSave() {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+                // You can implement auto-save to localStorage or send AJAX request
+                console.log('Auto-saving draft...');
+            }, 3000);
+        }
+
+        // Add auto-save listeners to form inputs
+        document.querySelectorAll('#blogForm input, #blogForm textarea').forEach(input => {
+            input.addEventListener('input', autoSave);
+        });
+
+        // Form validation
+        document.getElementById('blogForm').addEventListener('submit', function(e) {
+            const title = document.getElementById('title').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const excerpt = document.getElementById('expert').value.trim();
+            
+            if (!title || !content || !excerpt) {
+                e.preventDefault();
+                alert('Please fill in all required fields (Title, Author, Excerpt, and Content).');
+                return false;
+            }
+            
+            if (title.length < 5) {
+                e.preventDefault();
+                alert('Title must be at least 5 characters long.');
+                return false;
+            }
+            
+            if (content.length < 50) {
+                e.preventDefault();
+                alert('Content must be at least 50 characters long.');
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>

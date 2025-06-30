@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head") %>
+    <title>Preview: <%= blog.title %> - Blogify</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .preview-container {
+            padding: 40px 0 80px;
+        }
+
+        .preview-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .preview-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+            color: #ffffff;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .preview-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 12px 25px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #17a2b8, #20c997);
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d, #495057);
+        }
+
+        .blog-article {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .blog-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 40px;
+            text-align: center;
+            color: #ffffff;
+            position: relative;
+        }
+
+        .blog-emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .blog-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .blog-excerpt {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .blog-meta-section {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.9);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .blog-content-section {
+            padding: 50px 40px;
+        }
+
+        .blog-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #2d3748;
+        }
+
+        .blog-content h1, .blog-content h2, .blog-content h3 {
+            color: #1a202c;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .blog-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .blog-content blockquote {
+            border-left: 4px solid #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            margin: 2rem 0;
+            padding: 1rem 1.5rem;
+            font-style: italic;
+        }
+
+        .blog-content code {
+            background: #f7fafc;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e53e3e;
+        }
+
+        .blog-content pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .status-warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .warning-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .warning-text {
+            color: #856404;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .preview-title {
+                font-size: 1.6rem;
+            }
+
+            .blog-title {
+                font-size: 2rem;
+            }
+
+            .blog-hero, .blog-content-section {
+                padding: 40px 20px;
+            }
+
+            .blog-meta-section {
+                padding: 15px 20px;
+            }
+
+            .blog-meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .preview-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-btn {
+                width: 200px;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .blog-emoji {
+                font-size: 3rem;
+            }
+
+            .blog-title {
+                font-size: 1.8rem;
+            }
+
+            .blog-content {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include("./partials/nav") %>
+
+    <div class="preview-container">
+        <div class="container">
+            <!-- Preview Header -->
+            <div class="preview-header">
+                <div class="preview-badge">📋 Blog Preview</div>
+                <h1 class="preview-title">Preview Mode</h1>
+                <div class="preview-actions">
+                    <a href="/user/edit-blog/<%= blog._id %>" class="action-btn btn-edit">
+                        ✏️ Edit Blog
+                    </a>
+                    <a href="/user/see-blog" class="action-btn btn-back">
+                        ← Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <!-- Draft Warning -->
+            <% if (!blog.published) { %>
+            <div class="status-warning">
+                <div class="warning-icon">⚠️</div>
+                <div class="warning-text">
+                    This blog is currently in draft mode and not visible to the public
+                </div>
+            </div>
+            <% } %>
+
+            <!-- Blog Article -->
+            <article class="blog-article">
+                <!-- Blog Hero Section -->
+                <header class="blog-hero">
+                    <span class="blog-emoji"><%= blog.image || '📝' %></span>
+                    <h1 class="blog-title"><%= blog.title %></h1>
+                    <p class="blog-excerpt"><%= blog.expert %></p>
+                </header>
+
+                <!-- Blog Meta Information -->
+                <div class="blog-meta-section">
+                    <div class="blog-meta">
+                        <div class="meta-item">
+                            👤 By <%= blog.author || 'Anonymous' %>
+                        </div>
+                        <div class="meta-item">
+                            📅 <%= new Date(blog.createdAt).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            }) %>
+                        </div>
+                        <div class="meta-item">
+                            👁️ <%= blog.views || 0 %> views
+                        </div>
+                        <div class="meta-item">
+                            <span class="<%= blog.published ? 'status-published' : 'status-draft' %>">
+                                <%= blog.published ? '✅ Published' : '📝 Draft' %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Content -->
+                <div class="blog-content-section">
+                    <div class="blog-content">
+                        <%- blog.content || '<p>No content available. Click "Edit Blog" to add content to this post.</p>' %>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Bottom Actions -->
+            <div class="preview-header" style="margin-top: 30px;">
+                <div class="preview-actions">
+                    <a href="/user/edit-blog/<%= blog._id %>" class="action-btn btn-edit">
+                        ✏️ Edit This Blog
+                    </a>
+                    <% if (blog.published) { %>
+                    <a href="/blog/<%= blog.slug %>" class="action-btn" target="_blank">
+                        🌐 View Published
+                    </a>
+                    <% } %>
+                    <a href="/user/see-blog" class="action-btn btn-back">
+                        ← Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include("./partials/script") %>
+</body>
+</html>

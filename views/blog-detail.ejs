@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head") %>
+    <title><%= blog.title %> - Blogify</title>
+    <meta name="description" content="<%= blog.expert || blog.excerpt %>">
+    <meta property="og:title" content="<%= blog.title %>">
+    <meta property="og:description" content="<%= blog.expert || blog.excerpt %>">
+    <meta property="og:type" content="article">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .blog-hero {
+            padding: 100px 0 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .blog-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .blog-excerpt {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .preview-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .blog-content-section {
+            padding: 60px 0;
+        }
+
+        .content-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .blog-content {
+            color: #2d3748;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .blog-content h1,
+        .blog-content h2,
+        .blog-content h3,
+        .blog-content h4,
+        .blog-content h5,
+        .blog-content h6 {
+            color: #1a202c;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        .blog-content h2 {
+            font-size: 2rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .blog-content h3 {
+            font-size: 1.5rem;
+        }
+
+        .blog-content p {
+            margin-bottom: 20px;
+        }
+
+        .blog-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-content blockquote {
+            border-left: 4px solid #667eea;
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+            font-style: italic;
+        }
+
+        .blog-content code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e91e63;
+        }
+
+        .blog-content pre {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .blog-content ul,
+        .blog-content ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        .blog-content li {
+            margin-bottom: 8px;
+        }
+
+        .author-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #ffffff;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .author-details h4 {
+            margin: 0 0 5px;
+            font-size: 1.2rem;
+        }
+
+        .author-details p {
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        .related-blogs {
+            padding: 40px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .related-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .related-card h5 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .related-card p {
+            color: #6b7280;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .related-date {
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #ffffff;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            text-decoration: none;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #17a2b8, #20c997);
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d, #495057);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .blog-title {
+                font-size: 2rem;
+            }
+            
+            .hero-content,
+            .content-container {
+                padding: 30px 20px;
+            }
+            
+            .blog-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .author-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .blog-title {
+                font-size: 1.8rem;
+            }
+            
+            .content-container {
+                padding: 25px 15px;
+            }
+            
+            .blog-content {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include("./partials/nav") %>
+
+    <!-- Blog Hero Section -->
+    <section class="blog-hero">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="hero-content">
+                        <% if (typeof isPreview !== 'undefined' && isPreview) { %>
+                            <div class="preview-badge">📝 Preview Mode</div>
+                        <% } %>
+                        
+                        <h1 class="blog-title"><%= blog.title %></h1>
+                        
+                        <div class="blog-meta">
+                            <div class="meta-item">
+                                <span>📅</span>
+                                <span><%= new Date(blog.createdAt || blog.date).toLocaleDateString('en-US', { 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric' 
+                                }) %></span>
+                            </div>
+                            <% if (blog.author) { %>
+                                <div class="meta-item">
+                                    <span>✍️</span>
+                                    <span>By <%= blog.author.username || blog.author.name || 'Anonymous' %></span>
+                                </div>
+                            <% } %>
+                            <div class="meta-item">
+                                <span>👁️</span>
+                                <span><%= blog.views || 0 %> views</span>
+                            </div>
+                            <% if (blog.readTime) { %>
+                                <div class="meta-item">
+                                    <span>⏱️</span>
+                                    <span><%= blog.readTime %> min read</span>
+                                </div>
+                            <% } %>
+                        </div>
+                        
+                        <% if (blog.expert || blog.excerpt) { %>
+                            <p class="blog-excerpt"><%= blog.expert || blog.excerpt %></p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Content Section -->
+    <section class="blog-content-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="content-container">
+                        <div class="blog-content">
+                            <%- blog.content %>
+                        </div>
+                    </div>
+
+                    <!-- Author Section -->
+                    <% if (blog.author && !isPreview) { %>
+                        <div class="author-section">
+                            <div class="author-info">
+                                <div class="author-avatar">
+                                    <%= (blog.author.username || blog.author.name || 'A').charAt(0).toUpperCase() %>
+                                </div>
+                                <div class="author-details">
+                                    <h4><%= blog.author.username || blog.author.name || 'Anonymous' %></h4>
+                                    <p>Author • <%= blog.author.bio || 'Passionate writer and blogger' %></p>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <a href="/user/see-blog" class="action-btn btn-back">
+                            ← Back to My Blogs
+                        </a>
+                        <% if (user && blog.author && user._id.toString() === blog.author._id.toString()) { %>
+                            <a href="/user/edit-blog/<%= blog._id %>" class="action-btn btn-edit">
+                                ✏️ Edit Blog
+                            </a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Blogs Section -->
+    <% if (relatedBlogs && relatedBlogs.length > 0) { %>
+        <section class="related-blogs">
+            <div class="container">
+                <h2 class="section-title">Related Articles</h2>
+                <div class="related-grid">
+                    <% relatedBlogs.forEach(relatedBlog => { %>
+                        <a href="/blog/<%= relatedBlog.slug %>" class="related-card">
+                            <h5><%= relatedBlog.title %></h5>
+                            <p><%= relatedBlog.expert || relatedBlog.excerpt %></p>
+                            <div class="related-date">
+                                <%= new Date(relatedBlog.createdAt || relatedBlog.date).toLocaleDateString('en-US', { 
+                                    month: 'short', 
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                }) %>
+                            </div>
+                        </a>
+                    <% }) %>
+                </div>
+            </div>
+        </section>
+    <% } %>
+
+    <%- include("./partials/script") %>
+
+    <script>
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add copy functionality to code blocks
+        document.querySelectorAll('pre code').forEach(block => {
+            const button = document.createElement('button');
+            button.className = 'copy-btn';
+            button.textContent = 'Copy';
+            button.style.cssText = `
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: #667eea;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 0.8rem;
+            `;
+            
+            const pre = block.parentElement;
+            pre.style.position = 'relative';
+            pre.appendChild(button);
+            
+            button.addEventListener('click', () => {
+                navigator.clipboard.writeText(block.textContent).then(() => {
+                    button.textContent = 'Copied!';
+                    setTimeout(() => {
+                        button.textContent = 'Copy';
+                    }, 2000);
+                });
+            });
+        });
+
+        // Add reading progress indicator
+        const progressBar = document.createElement('div');
+        progressBar.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            z-index: 9999;
+            transition: width 0.3s ease;
+        `;
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+    </script>
+</body>
+</html>
