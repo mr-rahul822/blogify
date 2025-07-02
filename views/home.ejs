@@ -131,6 +131,241 @@
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
       }
 
+      /* Blog Showcase Section */
+      .blogs-section {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        position: relative;
+      }
+
+      .blogs-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 3rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 1rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-subtitle {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #718096;
+        margin-bottom: 4rem;
+      }
+
+      .blogs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .blog-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s ease;
+        border: 1px solid rgba(102, 126, 234, 0.1);
+        position: relative;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+      }
+
+      .blog-image {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .blog-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .blog-content {
+        padding: 25px;
+      }
+
+      .blog-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+        color: #718096;
+      }
+
+      .blog-author {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+      }
+
+      .blog-date {
+        font-size: 0.85rem;
+      }
+
+      .blog-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 10px;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .blog-excerpt {
+        color: #718096;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .blog-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 15px;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .blog-stats {
+        display: flex;
+        gap: 15px;
+        font-size: 0.9rem;
+        color: #718096;
+      }
+
+      .blog-stat {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .blog-read-more {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+
+      .blog-read-more:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .no-blogs {
+        text-align: center;
+        color: #718096;
+        font-size: 1.2rem;
+        margin: 60px 0;
+      }
+
+      /* Pagination Styles */
+      .pagination-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+        gap: 10px;
+      }
+
+      .pagination-link {
+        padding: 12px 18px;
+        background: white;
+        color: #667eea;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: 600;
+        border: 2px solid #667eea;
+        transition: all 0.3s ease;
+        min-width: 50px;
+        text-align: center;
+      }
+
+      .pagination-link:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .pagination-current {
+        padding: 12px 18px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 10px;
+        font-weight: 700;
+        min-width: 50px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .pagination-info {
+        margin-top: 20px;
+        text-align: center;
+        color: #718096;
+        font-size: 0.95rem;
+      }
+
+      .load-more-container {
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      .load-more-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px 40px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .load-more-btn:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+      }
+
       .features-section {
         padding: 100px 0;
         background: linear-gradient(45deg, #f8f9fa 0%, #e9ecef 100%);
@@ -255,6 +490,10 @@
           justify-content: center;
         }
 
+        .section-title {
+          font-size: 2rem;
+        }
+
         .features-title {
           font-size: 2rem;
         }
@@ -262,6 +501,22 @@
         .features-grid {
           grid-template-columns: 1fr;
           gap: 30px;
+        }
+
+        .blogs-grid {
+          grid-template-columns: 1fr;
+          gap: 25px;
+        }
+
+        .pagination-container {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .pagination-link,
+        .pagination-current {
+          padding: 10px 14px;
+          font-size: 0.9rem;
         }
       }
 
@@ -278,12 +533,28 @@
           padding: 12px 25px;
           font-size: 1rem;
         }
+
+        .blogs-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .blog-card {
+          margin: 0 10px;
+        }
+
+        .pagination-container {
+          gap: 5px;
+        }
+
+        .pagination-link,
+        .pagination-current {
+          padding: 8px 12px;
+          font-size: 0.85rem;
+        }
       }
     </style>
   </head>
   <body>
-    
-
     <!-- Hero Section -->
     <section class="hero-section">
       <div class="hero-content">
@@ -306,6 +577,128 @@
       <div class="scroll-indicator">
         <div style="font-size: 1.5rem">↓</div>
         <div style="font-size: 0.9rem; margin-top: 5px">Scroll to explore</div>
+      </div>
+    </section>
+
+    <!-- Blog Showcase Section -->
+    <section class="blogs-section">
+      <div class="blogs-container">
+        <h2 class="section-title">Latest Stories</h2>
+        <p class="section-subtitle">Discover amazing content from our community of writers</p>
+        
+        <div class="blogs-grid">
+          <% if (blogs && blogs.length > 0) { %>
+            <% blogs.forEach(blog => { %>
+              <div class="blog-card">
+                <div class="blog-image">
+                  <% if (blog.image) { %>
+                    <img src="<%= blog.image %>" alt="<%= blog.title %>" />
+                  <% } else { %>
+                    📝
+                  <% } %>
+                </div>
+                <div class="blog-content">
+                  <div class="blog-meta">
+                    <div class="blog-author">
+                      <span>👤</span>
+                      <%= blog.author?.name || blog.author?.username || 'Anonymous' %>
+                    </div>
+                    <div class="blog-date">
+                      <%= new Date(blog.createdAt || blog.date).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric' 
+                      }) %>
+                    </div>
+                  </div>
+                  <h3 class="blog-title"><%= blog.title %></h3>
+                  <p class="blog-excerpt">
+                    <%= blog.expert || blog.content?.substring(0, 150) || 'No excerpt available...' %>
+                  </p>
+                  <div class="blog-footer">
+                    <div class="blog-stats">
+                      <div class="blog-stat">
+                        <span>👁️</span>
+                        <%= blog.views || 0 %>
+                      </div>
+                      <% if (blog.category) { %>
+                        <div class="blog-stat">
+                          <span>🏷️</span>
+                          <%= blog.category %>
+                        </div>
+                      <% } %>
+                    </div>
+                    <a href="/user/blog/<%= blog.slug || blog._id %>" class="blog-read-more">
+                      Read More
+                    </a>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <div class="no-blogs">
+              <h3>No blogs available yet</h3>
+              <p>Be the first to share your story!</p>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Pagination Section -->
+        <% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+          <div class="pagination-container">
+            <% if (hasPrevPage) { %>
+              <a href="?page=<%= prevPage %>" class="pagination-link">← Previous</a>
+            <% } %>
+            
+            <% 
+              // Calculate page range to display
+              let startPage = Math.max(1, currentPage - 2);
+              let endPage = Math.min(totalPages, currentPage + 2);
+              
+              // Adjust if we're near the beginning or end
+              if (endPage - startPage < 4) {
+                if (startPage === 1) {
+                  endPage = Math.min(totalPages, startPage + 4);
+                } else if (endPage === totalPages) {
+                  startPage = Math.max(1, endPage - 4);
+                }
+              }
+            %>
+            
+            <% if (startPage > 1) { %>
+              <a href="?page=1" class="pagination-link">1</a>
+              <% if (startPage > 2) { %>
+                <span class="pagination-link" style="border: none; background: transparent; color: #718096;">...</span>
+              <% } %>
+            <% } %>
+            
+            <% for (let i = startPage; i <= endPage; i++) { %>
+              <% if (i === currentPage) { %>
+                <span class="pagination-current"><%= i %></span>
+              <% } else { %>
+                <a href="?page=<%= i %>" class="pagination-link"><%= i %></a>
+              <% } %>
+            <% } %>
+            
+            <% if (endPage < totalPages) { %>
+              <% if (endPage < totalPages - 1) { %>
+                <span class="pagination-link" style="border: none; background: transparent; color: #718096;">...</span>
+              <% } %>
+              <a href="?page=<%= totalPages %>" class="pagination-link"><%= totalPages %></a>
+            <% } %>
+            
+            <% if (hasNextPage) { %>
+              <a href="?page=<%= nextPage %>" class="pagination-link">Next →</a>
+            <% } %>
+          </div>
+          
+          <div class="pagination-info">
+            Showing page <%= currentPage %> of <%= totalPages %> 
+            <% if (typeof blogs !== 'undefined' && blogs.length > 0) { %>
+              (<%= blogs.length %> blogs on this page)
+            <% } %>
+          </div>
+        <% } %>
       </div>
     </section>
 

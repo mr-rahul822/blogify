@@ -77,77 +77,6 @@ router.post("/signin", async (req,res)=>{
     }
 })
 
-// router.post("/logout", auth, async (req,res)=>{
-//    try{
-//         // // const token = req.
-//          const token = req.cookies.token;
-        
-
-//          const payload = JWT.decode(token);
-//         // console.log("Decoded payload:", payload);
-
-//         // res.clearCookie("token", { path: "/" });  direct expriere at
-//         await redisclient.set(`token ${token}`,"blocked")
-//         console.log(redisclient)
-
-//         await redisclient.expireAt(`token :${token}`,payload.exp);
-
-//         res.cookie("token",null,{expires: new Date(Date.now())});
-
-//         return res.redirect("/user/signin");
-    
-//         // return res.redirect("/user/signin")
-//    }
-//    catch(err){
-//     res.redirect("/user/signin")
-//    }
-        
-// })
-
-
-
-// // Alternative version with better error handling and success message
-// router.post("/logout", auth, async (req, res) => {
-//     try {
-//         const token = req.cookies.token;
-        
-//         if (!token) {
-//             return res.redirect("/user/signin");
-//         }
-
-//         const payload = JWT.decode(token);
-        
-//         if (payload && payload.exp) {
-//             // Add to Redis blocklist with consistent key format
-//             const redisKey = `blocked_token:${token}`;
-            
-//             // Use pipeline for better performance
-//             const pipeline = redisclient.pipeline();
-//             pipeline.set(redisKey, "blocked");
-//             pipeline.expireAt(redisKey, payload.exp);
-//             await pipeline.exec();
-            
-//             console.log('Token successfully blocked in Redis');
-//         }
-
-//         // Clear cookie properly
-//         res.clearCookie("token", { 
-//             path: "/",
-//             httpOnly: true,
-//             // secure: process.env.NODE_ENV === 'production'
-//         });
-
-//         // Redirect with success message (if you want to show a message)
-//         return res.redirect("/user/signin");
-
-//     } catch (err) {
-//         console.error('Logout error:', err);
-        
-//         // Always clear cookie even on error
-//         res.clearCookie("token", { path: "/" });
-//         return res.redirect("/user/signin");
-//     }
-// });
 
 
 // Simple version without batch operations (most reliable)
@@ -163,7 +92,7 @@ router.post("/logout", auth, async (req, res) => {
         
         if (payload && payload.exp) {
             const redisKey = `blocked_token:${token}`;
-            // console.log(redisKey+"bloked_token")
+            
             
             // Sequential operations (more reliable for different Redis clients)
             await redisclient.set(redisKey, "blocked");
@@ -176,7 +105,7 @@ router.post("/logout", auth, async (req, res) => {
         res.clearCookie("token", { 
             path: "/",
             httpOnly: true,
-            // secure: process.env.NODE_ENV === 'production'
+            
         });
 
         // console.log('User logged out successfully');

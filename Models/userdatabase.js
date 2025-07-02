@@ -42,7 +42,7 @@ const userschema = new Schema({
 // JWT gtoken genrate method
 
 userschema.methods.getJWT = function(){
-    const genrate_token  = JWT.sign({id:this._id,email:this.email},"Blogify@user",{expiresIn: "1h"});
+    const genrate_token  = JWT.sign({id:this._id,email:this.email},process.env.ENC_SECRET_KEY ,{expiresIn: "1h"});
     return genrate_token;
 }
 
@@ -70,6 +70,11 @@ userschema.pre("save", async function (next){
     }
 
 })
+
+
+userschema.methods.comparepass = async function(candidatePassword){
+    return await bcrypt.compare(candidatePassword, this.password)
+}
 
 const USER = mongoose.model("blogify_user",userschema)
 

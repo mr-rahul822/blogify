@@ -1,14 +1,17 @@
 const mongoose = require("mongoose")
 const { applyTimestamps } = require("./userdatabase")
+const USER = require("./userdatabase")
 const { Schema } = mongoose
 const postSchema = new mongoose.Schema({
     title:{
         type: String,
         required : true
     },
-    auther:{
-        type: String,
+    author:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: USER,
         required :true
+
     },
     date:{
         type: String,
@@ -34,8 +37,20 @@ const postSchema = new mongoose.Schema({
     published:{
         type: Boolean,
         default : false
-    }
+    },
+     views: {
+        type: Number,
+        default: 0
+    },
 }, {timestamps: true})
+
+postSchema.pre('save' , function(next){
+    if(this.isModified()&& !this.isNew){
+        this.updatedAt = Date.now
+    }
+
+    next();
+})
 
 
 const USERBLOGS = mongoose.model("blogposts",postSchema)
