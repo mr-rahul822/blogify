@@ -24,7 +24,10 @@ const redisClient = redis.createClient({
     password: process.env.REDIS_DB_PASS,
     socket: {
         host: process.env.REDIS_URL,
-        port: parseInt(process.env.REDIS_PORT, 10) || 6379// ✅ always parse to number
+        port: parseInt(process.env.REDIS_PORT, 10) || 6379,
+        family: 4,
+        connectTimeout: 10000,
+        lazyConnect: true // ✅ always parse to number
     }
 });
 
