@@ -72,12 +72,12 @@ redisClient.on('connect', () => {
 
 
 
-console.log('=== ENVIRONMENT VARIABLES DEBUG ===');
-console.log('REDIS_URL:', process.env.REDIS_URL);
-console.log('REDIS_PORT:', process.env.REDIS_PORT);
-console.log('REDIS_DB_USER:', process.env.REDIS_DB_USER);
-console.log('REDIS_DB_PASS:', process.env.REDIS_DB_PASS ? '***SET***' : 'NOT SET');
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('=== END DEBUG ===');
+// console.log('=== ENVIRONMENT VARIABLES DEBUG ===');
+// console.log('REDIS_URL:', process.env.REDIS_URL);
+// console.log('REDIS_PORT:', process.env.REDIS_PORT);
+// console.log('REDIS_DB_USER:', process.env.REDIS_DB_USER);
+// console.log('REDIS_DB_PASS:', process.env.REDIS_DB_PASS ? '***SET***' : 'NOT SET');
+// console.log('NODE_ENV:', process.env.NODE_ENV);
+// console.log('=== END DEBUG ===');
 
 module.exports = redisClient;
