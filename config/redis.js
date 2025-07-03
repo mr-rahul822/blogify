@@ -20,11 +20,11 @@
 const redis = require("redis");
 
 const redisClient = redis.createClient({
-    username: process.env.RADIS_DB_USER,
-    password: process.env.RADIS_DB_PASS,
+    username: process.env.REDIS_DB_USER,
+    password: process.env.REDIS_DB_PASS,
     socket: {
         host: process.env.REDIS_URL,
-        port: parseInt(process.env.RADIS_PORT, 10) // ✅ always parse to number
+        port: parseInt(process.env.REDIS_PORT, 10) // ✅ always parse to number
     }
 });
 
