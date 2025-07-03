@@ -90,8 +90,16 @@ app.use("/user",blogRouter )
 const InitlizeConnection = async ()=>{
     try{
         
-    await Promise.all([redisclient.connect(),main()]);
-    console.log("DB connected!")
+    await redisclient.connect()
+    .then(() => console.log("Redis connected"))
+    .catch(err => console.error("Redis connection error:", err));
+    // console.log("connected to DB")
+
+    await main()
+    console.log("connected to mongoDB")
+
+    // await Promise.all([redisclient.connect(),main()]);
+    // console.log("DB connected!")
 
     app.listen(process.env.PORT, () =>{
     console.log(`server started on port ${process.env.PORT}: `)
