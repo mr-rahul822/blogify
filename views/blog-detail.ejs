@@ -58,11 +58,9 @@
             font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.9);
             max-width: 800px;
-            margin: 0 auto;
+            margin: 20px auto 0;
             line-height: 1.6;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 40px;
+            padding: 20px 0;
         }
 
         .preview-badge {
@@ -87,7 +85,7 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 50px;
+            padding: 40px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             margin-bottom: 40px;
@@ -110,6 +108,15 @@
             font-weight: 600;
         }
 
+        .blog-content h1:first-child,
+        .blog-content h2:first-child,
+        .blog-content h3:first-child,
+        .blog-content h4:first-child,
+        .blog-content h5:first-child,
+        .blog-content h6:first-child {
+            margin-top: 0;
+        }
+
         .blog-content h2 {
             font-size: 2rem;
             border-bottom: 3px solid #667eea;
@@ -122,6 +129,10 @@
 
         .blog-content p {
             margin-bottom: 20px;
+        }
+
+        .blog-content p:last-child {
+            margin-bottom: 0;
         }
 
         .blog-content img {
