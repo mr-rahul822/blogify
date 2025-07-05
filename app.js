@@ -35,6 +35,15 @@ app.get("/health", (req, res) => {
 // Simplified home route that should work
 app.get("/", async (req, res) => {
     try {
+        // Check if database is connected first
+        if (!mongoose.connection.readyState) {
+            console.log("Database not connected, serving static response");
+            return res.json({ 
+                message: "Database not connected",
+                status: "partial"
+            });
+        }
+
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 12;
         const skip = (page - 1) * limit;
@@ -56,9 +65,9 @@ app.get("/", async (req, res) => {
                 .limit(limit);
         }
 
-        const totalBlogs = await USERBLOGS.countDocuments({ published: true }) || 
-                          await USERBLOGS.countDocuments({});
-        
+        const totalBlogs = await USERBLOGS.countDocuments({ published: true }) ||
+                           await USERBLOGS.countDocuments({});
+
         const totalPages = Math.ceil(totalBlogs / limit);
 
         console.log(`Rendering ${blogs.length} blogs`);
@@ -72,18 +81,15 @@ app.get("/", async (req, res) => {
             hasPrevPage: page > 1,
             nextPage: page + 1,
             prevPage: page - 1,
-            
-            
         });
     } catch (error) {
         console.error("Error in home route:", error);
-        res.render("home", {
-            title: "Blogify - Where Stories Come to Life",
-            blogs: [],
-            currentPage: 1,
-            totalPages: 0,
-            hasNextPage: false,
-            hasPrevPage: false
+        
+        // Send JSON response instead of trying to render template
+        res.status(500).json({
+            error: "Internal server error",
+            message: error.message,
+            timestamp: new Date().toISOString()
         });
     }
 });
