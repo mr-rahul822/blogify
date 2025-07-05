@@ -24,7 +24,12 @@ app.set("views" , path.join(__dirname,"views"))
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/health", (req, res) => {
-    res.json({ status: "OK", port: process.env.PORT || 8080 });
+    console.log("Health check hit");
+    res.json({ 
+        status: "OK", 
+        port: PORT,
+        timestamp: new Date().toISOString()
+    });
 });
 
 // Simplified home route that should work
