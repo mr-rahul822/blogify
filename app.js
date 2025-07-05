@@ -23,6 +23,9 @@ app.set("view engine", "ejs")
 app.set("views" , path.join(__dirname,"views"))
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/health", (req, res) => {
+    res.json({ status: "OK", port: process.env.PORT || 8080 });
+});
 
 // Simplified home route that should work
 app.get("/", async (req, res) => {
@@ -87,32 +90,34 @@ app.use("/user",blogRouter )
 
 
 const PORT =process.env.PORT ||8080
-const InitlizeConnection = async ()=>{
-    try{
+
+const InitlizeConnection = async () => {
+    try {
+        // Connect to MongoDB
+        await main();
+        console.log("connected to mongoDB");
         
-    await redisclient.connect()
-    .then(() => console.log("Redis connected"))
-    .catch(err => console.error("Redis connection error:", err));
-    // console.log("connected to DB")
+        // Try Redis (don't let it block)
+        redisclient.connect()
+            .then(() => console.log("Redis connected"))
+            .catch(err => console.error("Redis connection error:", err));
 
-    await main()
-    console.log("connected to mongoDB")
+        // Start server
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`server started on port ${PORT}`);
+        });
 
-    // await Promise.all([redisclient.connect(),main()]);
-    // console.log("DB connected!")
-    
-
-    app.listen(PORT ,'0.0.0.0', () =>{
-    console.log(`server started on port ${process.env.PORT}: `)
-    })
-
-    }catch(err){
-        console.log("error" + err)
+    } catch (err) {
+        console.error("Initialization error:", err);
+        // Start server anyway for debugging
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`server started on port ${PORT} (with errors)`);
+        });
     }
-
 }
 
 InitlizeConnection();
+
 
 
 
