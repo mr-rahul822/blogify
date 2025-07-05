@@ -86,7 +86,7 @@ app.use("/user",userRouter)
 app.use("/user",blogRouter )
 
 
-
+const PORT =process.env.PORT ||8080
 const InitlizeConnection = async ()=>{
     try{
         
@@ -100,7 +100,7 @@ const InitlizeConnection = async ()=>{
 
     // await Promise.all([redisclient.connect(),main()]);
     // console.log("DB connected!")
-    const PORT =process.env.PORT ||8080
+    
 
     app.listen(PORT ,'0.0.0.0', () =>{
     console.log(`server started on port ${process.env.PORT}: `)
