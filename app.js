@@ -23,13 +23,72 @@ app.set("view engine", "ejs")
 app.set("views" , path.join(__dirname,"views"))
 app.use(express.urlencoded({ extended: true }));
 
-// Add this BEFORE your main home route for testing
-app.get("/test", (req, res) => {
-    res.json({ 
-        message: "Server is working!",
-        port: process.env.PORT || 8080,
-        timestamp: new Date().toISOString()
-    });
+
+
+// Simplified home route that should work
+// app.get("/", async (req, res) => {
+//     try {
+//         // Check if database is connected first
+//         if (!mongoose.connection.readyState) {
+//             console.log("Database not connected, serving static response");
+//             return res.json({ 
+//                 message: "Database not connected",
+//                 status: "partial"
+//             });
+//         }
+
+//         const page = parseInt(req.query.page) || 1;
+//         const limit = parseInt(req.query.limit) || 12;
+//         const skip = (page - 1) * limit;
+
+//         // Try the simplest query first
+//         let blogs = await USERBLOGS.find({ published: true })
+//             .populate('author', 'name username')
+//             .sort({ createdAt: -1 })
+//             .skip(skip)
+//             .limit(limit);
+
+//         // If no blogs found with published: true, try without filters
+//         if (blogs.length === 0) {
+//             console.log("No published blogs found, trying all blogs...");
+//             blogs = await USERBLOGS.find({})
+//                 .populate('author', 'name username')
+//                 .sort({ createdAt: -1 })
+//                 .skip(skip)
+//                 .limit(limit);
+//         }
+
+//         const totalBlogs = await USERBLOGS.countDocuments({ published: true }) ||
+//                            await USERBLOGS.countDocuments({});
+
+//         const totalPages = Math.ceil(totalBlogs / limit);
+
+//         console.log(`Rendering ${blogs.length} blogs`);
+
+//         res.render("home", {
+//             title: "Blogify - Where Stories Come to Life",
+//             blogs: blogs,
+//             currentPage: page,
+//             totalPages: totalPages,
+//             hasNextPage: page < totalPages,
+//             hasPrevPage: page > 1,
+//             nextPage: page + 1,
+//             prevPage: page - 1,
+//         });
+//     } catch (error) {
+//         console.error("Error in home route:", error);
+        
+//         // Send JSON response instead of trying to render template
+//         res.status(500).json({
+//             error: "Internal server error",
+//             message: error.message,
+//             timestamp: new Date().toISOString()
+//         });
+//     }
+// });
+
+app.get("/", (req, res) => {
+    res.json({ message: "Hello from Railway!", port: PORT });
 });
 
 app.get("/health", (req, res) => {
@@ -39,68 +98,6 @@ app.get("/health", (req, res) => {
         port: PORT,
         timestamp: new Date().toISOString()
     });
-});
-
-// Simplified home route that should work
-app.get("/", async (req, res) => {
-    try {
-        // Check if database is connected first
-        if (!mongoose.connection.readyState) {
-            console.log("Database not connected, serving static response");
-            return res.json({ 
-                message: "Database not connected",
-                status: "partial"
-            });
-        }
-
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 12;
-        const skip = (page - 1) * limit;
-
-        // Try the simplest query first
-        let blogs = await USERBLOGS.find({ published: true })
-            .populate('author', 'name username')
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
-
-        // If no blogs found with published: true, try without filters
-        if (blogs.length === 0) {
-            console.log("No published blogs found, trying all blogs...");
-            blogs = await USERBLOGS.find({})
-                .populate('author', 'name username')
-                .sort({ createdAt: -1 })
-                .skip(skip)
-                .limit(limit);
-        }
-
-        const totalBlogs = await USERBLOGS.countDocuments({ published: true }) ||
-                           await USERBLOGS.countDocuments({});
-
-        const totalPages = Math.ceil(totalBlogs / limit);
-
-        console.log(`Rendering ${blogs.length} blogs`);
-
-        res.render("home", {
-            title: "Blogify - Where Stories Come to Life",
-            blogs: blogs,
-            currentPage: page,
-            totalPages: totalPages,
-            hasNextPage: page < totalPages,
-            hasPrevPage: page > 1,
-            nextPage: page + 1,
-            prevPage: page - 1,
-        });
-    } catch (error) {
-        console.error("Error in home route:", error);
-        
-        // Send JSON response instead of trying to render template
-        res.status(500).json({
-            error: "Internal server error",
-            message: error.message,
-            timestamp: new Date().toISOString()
-        });
-    }
 });
 
 
