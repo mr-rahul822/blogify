@@ -100,8 +100,9 @@ const InitlizeConnection = async ()=>{
 
     // await Promise.all([redisclient.connect(),main()]);
     // console.log("DB connected!")
+    const PORT =process.env.PORT ||8080
 
-    app.listen(process.env.PORT, () =>{
+    app.listen(PORT ,'0.0.0.0', () =>{
     console.log(`server started on port ${process.env.PORT}: `)
     })
 
