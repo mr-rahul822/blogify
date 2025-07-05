@@ -58,6 +58,7 @@ app.get("/", async (req, res) => {
         res.render("home", {
             title: "Blogify - Where Stories Come to Life",
             blogs: blogs,
+            image:image,
             currentPage: page,
             totalPages: totalPages,
             hasNextPage: page < totalPages,
