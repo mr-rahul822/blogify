@@ -23,6 +23,7 @@ app.set("view engine", "ejs")
 app.set("views" , path.join(__dirname,"views"))
 app.use(express.urlencoded({ extended: true }));
 
+const PORT =process.env.PORT ||8080
 
 
 // Simplified home route that should work
@@ -106,7 +107,6 @@ app.use("/user",userRouter)
 app.use("/user",blogRouter )
 
 
-const PORT =process.env.PORT ||8080
 
 const InitlizeConnection = async () => {
     try {
