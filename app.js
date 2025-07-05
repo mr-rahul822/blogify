@@ -9,6 +9,7 @@ const main = require("./database")
 const cookieParser = require("cookie-parser")
 const redisclient = require("./config/redis")
 const USERBLOGS = require("./Models/blogdatabase");
+const mongoose = require("mongoose")
 
 
 
@@ -26,30 +27,18 @@ app.use(express.urlencoded({ extended: true }));
 const PORT =process.env.PORT ||8080
 
 
-// Simplified home route that should work
 app.get("/", async (req, res) => {
     try {
-        // Check if database is connected first
-        if (!mongoose.connection.readyState) {
-            console.log("Database not connected, serving static response");
-            return res.json({ 
-                message: "Database not connected",
-                status: "partial"
-            });
-        }
-
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 12;
         const skip = (page - 1) * limit;
 
-        // Try the simplest query first
         let blogs = await USERBLOGS.find({ published: true })
             .populate('author', 'name username')
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);
 
-        // If no blogs found with published: true, try without filters
         if (blogs.length === 0) {
             console.log("No published blogs found, trying all blogs...");
             blogs = await USERBLOGS.find({})
@@ -78,8 +67,6 @@ app.get("/", async (req, res) => {
         });
     } catch (error) {
         console.error("Error in home route:", error);
-        
-        // Send JSON response instead of trying to render template
         res.status(500).json({
             error: "Internal server error",
             message: error.message,
