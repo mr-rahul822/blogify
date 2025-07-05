@@ -23,6 +23,15 @@ app.set("view engine", "ejs")
 app.set("views" , path.join(__dirname,"views"))
 app.use(express.urlencoded({ extended: true }));
 
+// Add this BEFORE your main home route for testing
+app.get("/test", (req, res) => {
+    res.json({ 
+        message: "Server is working!",
+        port: process.env.PORT || 8080,
+        timestamp: new Date().toISOString()
+    });
+});
+
 app.get("/health", (req, res) => {
     console.log("Health check hit");
     res.json({ 
