@@ -30,6 +30,13 @@ redisClient.on('connect', () => {
     console.log('Connected to Redis Cloud successfully');
 });
 
+console.log('=== ENVIRONMENT VARIABLES DEBUG ===');
+console.log('REDIS_URL:', process.env.REDIS_URL);
+console.log('REDISPORT:', process.env.REDISPORT);
+console.log('REDISUSER:', process.env.REDISUSER);
+console.log('REDISPASSWORD:', process.env.REDISPASSWORD ? '***SET***' : 'NOT SET');
+console.log('=== END DEBUG ===');
+
 
 
 module.exports = redisClient;
