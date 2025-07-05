@@ -118,7 +118,7 @@ const InitlizeConnection = async () => {
         console.log("connected to mongoDB");
         
         // Try Redis (don't let it block)
-        redisclient.connect()
+        await redisclient.connect()
             .then(() => console.log("Redis connected"))
             .catch(err => console.error("Redis connection error:", err));
 
